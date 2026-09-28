@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aslamiyya Knowledge News</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06101d;color:#f8f5ee;font-family:Arial,"Noto Sans Tamil","Latha",sans-serif}
+.shell{width:100vw;height:100vh;display:grid;grid-template-rows:114px 1fr 84px;background:
+radial-gradient(circle at 82% 16%,rgba(207,167,82,.13),transparent 29%),
+linear-gradient(135deg,#06101d 0%,#0a1830 58%,#06101d 100%)}
+.top{display:grid;grid-template-columns:1fr auto;align-items:center;padding:0 58px;border-bottom:1px solid rgba(255,255,255,.11);background:rgba(3,10,22,.5)}
+.brand{display:flex;align-items:center;gap:18px}
+.logo{width:74px;height:74px;border-radius:50%;object-fit:cover;border:2px solid #cfa752;box-shadow:0 0 0 5px rgba(207,167,82,.08)}
+.brand h1{font-size:25px;letter-spacing:1.2px;margin:0;font-weight:800}
+.brand p{margin:6px 0 0;font-size:12px;letter-spacing:2.4px;color:#b8c2d1}
+.clock{text-align:right}
+#time{font-size:29px;font-weight:800}
+#date{font-size:12px;color:#cfa752;margin-top:5px}
+.main{display:grid;grid-template-columns:280px 1fr;min-height:0}
+.side{padding:46px 34px;border-right:1px solid rgba(255,255,255,.09);display:flex;flex-direction:column;justify-content:space-between}
+.kicker{font-size:12px;color:#cfa752;font-weight:800}
+.sideTitle{font-size:43px;line-height:1.03;font-weight:900;margin-top:16px}
+.sideSmall{font-size:13px;line-height:1.6;color:#9aa8b8;max-width:210px}
+.dots{display:flex;gap:8px}
+.dot{width:24px;height:4px;background:#334156;border-radius:8px;transition:.4s}
+.dot.active{background:#cfa752;width:50px}
+.stage{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:50px;align-items:center;padding:42px 62px 50px 66px;overflow:hidden}
+.number{position:absolute;right:35px;top:18px;font-size:140px;font-weight:900;color:rgba(255,255,255,.032);line-height:1}
+.content{min-width:0;transition:opacity .35s ease,transform .35s ease}
+.content.out,.visual.out{opacity:0;transform:translateY(15px)}
+.category{display:inline-block;padding:8px 13px;border:1px solid rgba(207,167,82,.55);color:#dfbd73;font-size:14px;font-weight:800;border-radius:3px;margin-bottom:22px}
+.headline{font-size:43px;line-height:1.23;font-weight:900;margin:0;max-width:900px}
+.rule{width:92px;height:5px;background:#cfa752;margin:28px 0 19px}
+.detail{font-size:19px;line-height:1.55;color:#bbc6d3;max-width:830px;margin:0}
+.visual{position:relative;height:470px;border-radius:14px;overflow:hidden;background:#101e31;box-shadow:0 26px 70px rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.12);transition:opacity .35s ease,transform .35s ease}
+.visual img{width:100%;height:100%;object-fit:cover;display:block}
+.visual:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(4,10,20,.72),transparent 45%)}
+.photoTag{position:absolute;left:18px;bottom:16px;z-index:2;background:rgba(3,8,17,.76);backdrop-filter:blur(8px);padding:8px 11px;border-left:3px solid #cfa752;font-size:11px;color:#d9e0e9;max-width:85%}
+.bottom{display:grid;grid-template-columns:205px 1fr;background:#f2eee5;color:#081321;overflow:hidden}
+.live{background:#cfa752;display:flex;align-items:center;justify-content:center;font-weight:900;letter-spacing:1px;font-size:14px}
+.ticker{display:flex;align-items:center;overflow:hidden;white-space:nowrap}
+.track{display:inline-block;padding-left:100%;animation:scroll 58s linear infinite;font-size:18px;font-weight:800}
+.sep{color:#a67d2d;margin:0 30px}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+
+/* Video takeover */
+.videoTakeover{position:absolute;inset:0;background:#000;z-index:999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none}
+.videoTakeover.active{opacity:1;visibility:visible;pointer-events:auto}
+.videoTakeover video{width:100%;height:100%;object-fit:contain;background:#000}
+.videoBadge{position:absolute;left:24px;top:22px;z-index:1000;background:rgba(6,16,29,.82);color:#fff;border-left:4px solid #cfa752;padding:10px 14px;font-weight:800;letter-spacing:1px;border-radius:3px}
+.videoSound{position:absolute;right:24px;bottom:22px;z-index:1000;background:rgba(6,16,29,.82);color:#d7dfeb;padding:8px 12px;font-size:12px;border-radius:3px}
+
+@media(max-width:1100px){
+.main{grid-template-columns:220px 1fr}.stage{grid-template-columns:1fr 360px;gap:30px;padding:35px}.headline{font-size:34px}.visual{height:360px}.side{padding:36px 25px}.sideTitle{font-size:34px}
+}
+</style>
+</head>
+<body>
+<div class="shell" id="dashboard">
+<header class="top">
+  <div class="brand">
+    <img class="logo" src="logo.jpeg" alt="Aslamiyya Arabic College logo">
+    <div><h1>ASLAMIYYA ARABIC COLLEGE</h1><p>KADAYANALLUR · TODAY’S TOP 5</p></div>
+  </div>
+  <div class="clock"><div id="time"></div><div id="date"></div></div>
+</header>
+
+<main class="main">
+  <aside class="side">
+    <div><div class="kicker">மாணவர் அறிவுப் புதுப்பிப்பு</div><div class="sideTitle">இன்றைய<br>TOP 5</div></div>
+    <div><p class="sideSmall">உலகம், இந்தியா, அறிவியல், தொழில்நுட்பம் மற்றும் விளையாட்டிலிருந்து மாணவர்களுக்கு பயனுள்ள முக்கிய செய்திகள்.</p><div class="dots" id="dots"></div></div>
+  </aside>
+
+  <section class="stage">
+    <div class="number" id="number">01</div>
+    <div class="content" id="content">
+      <div class="category" id="category"></div>
+      <h2 class="headline" id="headline"></h2>
+      <div class="rule"></div>
+      <p class="detail" id="detail"></p>
+    </div>
+    <div class="visual" id="visual">
+      <img id="newsImage" alt="">
+      <div class="photoTag" id="photoTag"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="bottom">
+  <div class="live">செய்தி வரிசை</div>
+  <div class="ticker"><div class="track" id="ticker"></div></div>
+</footer>
+</div>
+
+<div class="videoTakeover" id="videoTakeover">
+  <div class="videoBadge">ASLAMIYYA VIDEO</div>
+  <video id="featuredVideo" playsinline preload="auto" muted autoplay loop>
+    <source src="aslamiyya_video.mp4" type="video/mp4">
+  </video>
+  <div class="videoSound">TV-compatible playback • muted</div>
+</div>
+
+<script src="news.js"></script>
+<script>
+const news=window.ASLAMIYYA_NEWS||[];
+let idx=0;
+let newsTimer=null;
+let inVideo=false;
+
+const els={
+ content:document.getElementById('content'), visual:document.getElementById('visual'),
+ category:document.getElementById('category'), headline:document.getElementById('headline'),
+ detail:document.getElementById('detail'), number:document.getElementById('number'),
+ image:document.getElementById('newsImage'), tag:document.getElementById('photoTag'),
+ dots:document.getElementById('dots')
+};
+const videoTakeover=document.getElementById('videoTakeover');
+const featuredVideo=document.getElementById('featuredVideo');
+
+news.forEach(()=>{const d=document.createElement('span');d.className='dot';els.dots.appendChild(d)});
+const dotEls=[...document.querySelectorAll('.dot')];
+
+function render(i,animate=true){
+ if(animate){els.content.classList.add('out');els.visual.classList.add('out')}
+ setTimeout(()=>{
+   const n=news[i];
+   els.category.textContent=n.category;
+   els.headline.textContent=n.headline;
+   els.detail.textContent=n.detail;
+   els.number.textContent=String(i+1).padStart(2,'0');
+   els.image.src=n.image;
+   els.image.alt=n.category;
+   els.tag.textContent="PHOTO / "+n.source;
+   dotEls.forEach((d,j)=>d.classList.toggle('active',j===i));
+   els.content.classList.remove('out');els.visual.classList.remove('out');
+ },animate?350:0);
+}
+
+function scheduleNext(){
+ clearTimeout(newsTimer);
+ newsTimer=setTimeout(()=>{
+   if(inVideo) return;
+   if(idx < news.length-1){
+     idx++;
+     render(idx,true);
+     scheduleNext();
+   } else {
+     playFeaturedVideo();
+   }
+ },9500);
+}
+
+let videoEndTimer=null;
+
+function playFeaturedVideo(){
+ inVideo=true;
+ clearTimeout(newsTimer);
+ clearTimeout(videoEndTimer);
+
+ // Keep the muted video autoplaying continuously even while hidden.
+ // GEESTAR TV browsers may block a new play() call after several seconds.
+ // Because it is already playing, seeking back to the start does not require a new play() call.
+ try { featuredVideo.currentTime = 0.05; } catch(e) {}
+ videoTakeover.classList.add('active');
+
+ // Return to News 1 after the video duration.
+ videoEndTimer=setTimeout(endVideo,122000);
+}
+
+function endVideo(){
+ clearTimeout(videoEndTimer);
+ videoTakeover.classList.remove('active');
+ inVideo=false;
+ idx=0;
+ render(idx,false);
+ scheduleNext();
+}
+
+featuredVideo.addEventListener('error',()=>setTimeout(endVideo,1500));
+
+render(0,false);
+scheduleNext();
+
+document.getElementById('ticker').innerHTML=news.map(n=>n.headline).join('<span class="sep">◆</span>');
+
+function clock(){
+ const now=new Date();
+ document.getElementById('time').textContent=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+ document.getElementById('date').textContent=now.toLocaleDateString('ta-IN',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+}
+clock();setInterval(clock,1000);
+</script>
+</body>
+</html>
