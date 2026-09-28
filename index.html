@@ -46,9 +46,33 @@ linear-gradient(135deg,#06101d 0%,#0a1830 58%,#06101d 100%)}
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
 
 /* Video takeover */
-.videoTakeover{position:absolute;inset:0;background:#000;z-index:999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none}
-.videoTakeover.active{opacity:1;visibility:visible;pointer-events:auto}
-.videoTakeover video{width:100%;height:100%;object-fit:contain;background:#000}
+.videoTakeover{
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+width:100%;
+height:100%;
+background:#000;
+z-index:999999;
+display:none;
+overflow:hidden;
+}
+
+.videoTakeover.active{
+display:block;
+}
+
+.videoTakeover video{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:contain;
+background:#000;
+}
 .videoBadge{position:absolute;left:24px;top:22px;z-index:1000;background:rgba(6,16,29,.82);color:#fff;border-left:4px solid #cfa752;padding:10px 14px;font-weight:800;letter-spacing:1px;border-radius:3px}
 .videoSound{position:absolute;right:24px;bottom:22px;z-index:1000;background:rgba(6,16,29,.82);color:#d7dfeb;padding:8px 12px;font-size:12px;border-radius:3px}
 
