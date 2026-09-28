@@ -194,12 +194,7 @@ function playFeaturedVideo(){
 }
 
 function endVideo(){
- clearTimeout(videoEndTimer);
- videoTakeover.classList.remove('active');
- inVideo=false;
- idx=0;
- render(idx,false);
- scheduleNext();
+  window.location.reload();
 }
 featuredVideo.addEventListener('ended',endVideo);
 featuredVideo.addEventListener('error',()=>setTimeout(endVideo,1500));
