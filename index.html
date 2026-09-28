@@ -194,13 +194,22 @@ function playFeaturedVideo(){
 }
 
 function endVideo(){
-  window.location.reload();
-}
-featuredVideo.addEventListener('ended',endVideo);
-featuredVideo.addEventListener('error',()=>setTimeout(endVideo,1500));
+  clearTimeout(videoEndTimer);
+  videoTakeover.classList.remove('active');
+  inVideo=false;
 
-render(0,false);
-scheduleNext();
+  try{
+    featuredVideo.pause();
+    featuredVideo.currentTime=0;
+  }catch(e){}
+
+  idx=0;
+  render(0,false);
+
+  setTimeout(function(){
+    scheduleNext();
+  },1000);
+}
 
 document.getElementById('ticker').innerHTML=news.map(n=>n.headline).join('<span class="sep">◆</span>');
 
