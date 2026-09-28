@@ -201,7 +201,7 @@ function endVideo(){
  render(idx,false);
  scheduleNext();
 }
-
+featuredVideo.addEventListener('ended',endVideo);
 featuredVideo.addEventListener('error',()=>setTimeout(endVideo,1500));
 
 render(0,false);
