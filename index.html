@@ -219,6 +219,12 @@ function clock(){
  document.getElementById('date').textContent=now.toLocaleDateString('ta-IN',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
 }
 clock();setInterval(clock,1000);
+
+// Start the first news item immediately after the page loads.
+if(news.length){
+  render(0,false);
+  scheduleNext();
+}
 </script>
 </body>
 </html>
